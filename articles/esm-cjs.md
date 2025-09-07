@@ -1,5 +1,5 @@
 ---
-title: CJS, ESM, トランスパイラの依存解決
+title: CJS, ESM のモジュール解決にトランスパイラを添えて
 type: tech
 topics: []
 emoji: 🔖
@@ -7,9 +7,9 @@ published: false
 ---
 zenn-cli に wysiwyg エディターを追加しようと作業をしていたのですが、そこで CJS である `zenn-markdown-html` をブラウザでも実行可能にしようと、ESM に書き換えていました。
 
-しかし、ブラウザで実行すると期待通りだったのですが、サーバー側のCJSで実行すると import がなぜか `{default: fn}` の形式になり、エラーになりました。
+しかし、ブラウザで実行すると期待通りだったのですが、サーバー側の CJS で実行すると import がなぜか `{default: fn}` の形式になり、エラーになりました。
 
-調べてみると、`zenn-markdown-html` の依存先である CJS の [@steelydylan/markdown-it-imsize](https://www.npmjs.com/package/@steelydylan/markdown-it-imsize) が関連していました。
+調べてみると、`zenn-markdown-html` の依存先である CJS の [@steelydylan/markdown-it-imsize](https://www.npmjs.com/package/@steelydylan/markdown-it-imsize) が関連しているっぽいです。
 
 本記事ではこの現象が起きた理由を、CJS, ESM, トランスパイラーの観点から調べていきます。
 
@@ -25,7 +25,7 @@ CommonJS(CJS) はサーバー (Node)で採用されている仕様で、その�
 
 ---
 
-ここからは、以下のフォルダ構造を前提に話します。pnpmのモノレポです。
+ここからは、以下のフォルダ構造を前提に話します。pnpm のモノレポです。
 
 ```:フォルダ構造
 ├── package.json
@@ -67,7 +67,7 @@ export const namedExport = "named export";
 
 デフォルトエクスポートと名前付きエクスポートはよくみるやつです。
 
-**CJS は主に3つの記法がありました。**
+**CJS は主に 3 つの記法がありました。**
 
 ```js:cjs/mod-default.js
 module.exports = "default export"
@@ -109,7 +109,7 @@ console.log(modMix.namedExport) // "Fake Named Export"
 
 ブラウザ用だから ESM は Node では実行できないんでしょ？と思ってましたが、意外にも Node で実行可能です。
 
-実は ESM 対応は、Node v14 で stable になったみたいです。
+実は ESM 対応は、Node v14 で stable になったみたいです。（導入されたのは v12）
 
 https://nodejs.medium.com/node-js-version-14-available-now-8170d384567e
 
@@ -123,7 +123,7 @@ https://nodejs.medium.com/node-js-version-14-available-now-8170d384567e
 
 #### ESM → CJS
 
-これは v14 の時点では既に可能だったみたいです。`module.exports` が、ESM のデフォルトエクスポートとして認識されます。
+これは v12 の時点では既に可能だったみたいです。`module.exports` が、ESM のデフォルトエクスポートとして認識されます。
 
 ```js:esm/main.js
 import mod from 'cjs/mod-default';
@@ -180,11 +180,12 @@ mod.default() // "Hello, ESM"
 console.log(mod.namedExport) // "Named Export"
 ```
 
-実際に試してみると、defaultという名前付きインポートになってました。
+実際に試してみると、default という名前付きインポートになってました。
 
-## TypeScriptが絡むと
+## TypeScript が絡むと
 
-ここまではややこしい話でしたが、TypeScript が絡むと更に複雑になります。
+ここまでもややこしい話でしたが、TypeScript が絡むと更に複雑になります。
+もう既に考えたくないですね。。。
 
 TypeScript のモジュール仕様は以下にありました。
 
