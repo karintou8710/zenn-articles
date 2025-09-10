@@ -6,7 +6,7 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "zenn-cli": "file:../../main/zenn-editor/packages/zenn-cli"
+  "devDependencies": {
+    "zenn-cli-wysiwyg": "^0.0.4"
   }
 }

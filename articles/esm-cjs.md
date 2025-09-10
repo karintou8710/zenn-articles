@@ -5,6 +5,7 @@ topics: []
 emoji: 🔖
 published: false
 ---
+
 zenn-cli に wysiwyg エディターを追加しようと作業をしていたのですが、そこで CJS である `zenn-markdown-html` をブラウザでも実行可能にしようと、ESM に書き換えていました。
 
 しかし、ブラウザで実行すると期待通りだったのですが、サーバー側の CJS で実行すると import の一部がなぜか `{default: fn}` の形式になり、デフォルトエクスポートが出来ておらずエラーになりました。
@@ -181,21 +182,43 @@ ESM の デフォルトエクスポートは、default の名前付きエクス�
 
 ESM → CJS へのトランスパイルの過程で、
 
-`import mod from "cjs"`を、ESMの意味論で `require("cjs").default`に変換する。
+`import mod from "cjs"`を、ESM の意味論で `require("cjs").default`に変換する。
 
 import \* as mod from "cjs" を、ESM の意味論で rewuire("cjs") に変換する。
 
-この挙動をいい感じにしたのが esModuleInteropフラグになる。
+この挙動をいい感じにしたのが  esModuleInterop フラグになる。
 
-\__esModuleフラグが設定されているか否かで、{ default: fn } でラップするか決める。
+\_\_esModule フラグが設定されているか否かで、{ default: fn } でラップするか決める。
 
-\__esModuleフラグはESM → CJSにトランスパイルされる時に付与される。
+\_\_esModule フラグは ESM → CJS にトランスパイルされる時に付与される。
 
 require した要素を全て { default: fn} の形式にしてから、`require("cjs").default`とすることでデフォルトエクスポートを可能にしている。
 
 ### zenn-markdown-html では何が起こっていたのか
 
- 
+### 言葉の定義
+
+- CommonJS
+- CommonJS (ESM): \_\_esModule が定義された CJS
+- Native ESM
+- TS Import:
+
+esm への変換
+
+- esm: そのまま
+- cjs: そのまま
+
+cjs への変換（デフォルト）
+
+- esm: requre が最近対応した
+- cjs: ESM の形式{default: fn, a: fn...}に対応する。デフォルトは require.default で取得される
+
+cjs への変換 (esModuleInterop)
+
+- esm: require が最近対応した
+- cjs: \_\_esModule がついていなければ、{default: mod}の形式に変換する
+
+- TS require
 
 ### 参考
 
