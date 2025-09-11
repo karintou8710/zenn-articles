@@ -9,8 +9,8 @@ importers:
   .:
     devDependencies:
       zenn-cli-wysiwyg:
-        specifier: ^0.0.4
-        version: 0.0.4(@babel/core@7.28.4)(@floating-ui/dom@1.7.4)(@tiptap/core@3.4.2(@tiptap/pm@3.4.2))(@types/react-dom@19.1.9(@types/react@19.1.12))(@types/react@19.1.12)(react-is@16.13.1)
+        specifier: ^0.0.5
+        version: 0.0.5(@babel/core@7.28.4)(@floating-ui/dom@1.7.4)(@tiptap/core@3.4.2(@tiptap/pm@3.4.2))(@types/react-dom@19.1.9(@types/react@19.1.12))(@types/react@19.1.12)(react-is@16.13.1)
 
 packages:
 
@@ -1439,16 +1439,16 @@ packages:
   yallist@3.1.1:
     resolution: {integrity: sha512-a4UGQaWPH59mOXUYnAG2ewncQS4i4F43Tv3JoAM+s2VDAmS9NsK8GpDMLrCHPksFT7h3K6TOoUNn2pb7RoXx4g==}
 
-  zenn-cli-wysiwyg@0.0.4:
-    resolution: {integrity: sha512-4lfMoG3tV9NcA8AX2jpUIm9mA76KHgo1XX6lhCKVOd226ocqdD49YjMXV1bWoQpcyxTYbgozs1wKmUSAHbPxVA==}
+  zenn-cli-wysiwyg@0.0.5:
+    resolution: {integrity: sha512-5b7/9tAk3s4Wt43RA/HzF3t2dDKfNJQxbS2cgy9tWFj47GHT2mFRLeCJq0NPBYbcCtRQ/tZsi8URH82bF3+XYg==}
     engines: {node: '>=14.0.0'}
     hasBin: true
 
   zenn-content-css@0.2.3:
     resolution: {integrity: sha512-CcIpWTslZ55V4FtB7oCwcuxaKEqePKECCmPwAiL/BfsmVMZGGFUzKai4fnsujo3XqbIQu+eESNxV8nqBXra0nQ==}
 
-  zenn-wysiwyg-editor@0.0.4:
-    resolution: {integrity: sha512-BQ5sQEFenK5ZlC3qVLyqGerOSDzs/Ec3mWrZee28qJC8LEP1PwFcD0kthBp9pXNJccbz6Qn++EIjfbiCnBGdpA==}
+  zenn-wysiwyg-editor@0.0.5:
+    resolution: {integrity: sha512-f9Jjt/Ouh65fJlqBt88u71gjXQOI8w+frZpgpgoBE5twUynr2nA+gXOL7vKkQkdyYh45rZ6r2uqJhV4YKW2n1Q==}
     peerDependencies:
       '@tiptap/pm': ^3.0.0
       '@tiptap/react': ^3.0.0
@@ -2923,7 +2923,7 @@ snapshots:
 
   yallist@3.1.1: {}
 
-  zenn-cli-wysiwyg@0.0.4(@babel/core@7.28.4)(@floating-ui/dom@1.7.4)(@tiptap/core@3.4.2(@tiptap/pm@3.4.2))(@types/react-dom@19.1.9(@types/react@19.1.12))(@types/react@19.1.12)(react-is@16.13.1):
+  zenn-cli-wysiwyg@0.0.5(@babel/core@7.28.4)(@floating-ui/dom@1.7.4)(@tiptap/core@3.4.2(@tiptap/pm@3.4.2))(@types/react-dom@19.1.9(@types/react@19.1.12))(@types/react@19.1.12)(react-is@16.13.1):
     dependencies:
       '@tiptap/pm': 3.4.2
       '@tiptap/react': 3.4.2(@floating-ui/dom@1.7.4)(@tiptap/core@3.4.2(@tiptap/pm@3.4.2))(@tiptap/pm@3.4.2)(@types/react-dom@19.1.9(@types/react@19.1.12))(@types/react@19.1.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -2952,7 +2952,7 @@ snapshots:
       styled-components: 5.3.11(@babel/core@7.28.4)(react-dom@18.3.1(react@18.3.1))(react-is@16.13.1)(react@18.3.1)
       swr: 1.3.0(react@18.3.1)
       ws: 8.18.3
-      zenn-wysiwyg-editor: 0.0.4(@tiptap/core@3.4.2(@tiptap/pm@3.4.2))(@tiptap/pm@3.4.2)(@tiptap/react@3.4.2(@floating-ui/dom@1.7.4)(@tiptap/core@3.4.2(@tiptap/pm@3.4.2))(@tiptap/pm@3.4.2)(@types/react-dom@19.1.9(@types/react@19.1.12))(@types/react@19.1.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@types/react-dom@19.1.9(@types/react@19.1.12))(@types/react@19.1.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      zenn-wysiwyg-editor: 0.0.5(@tiptap/core@3.4.2(@tiptap/pm@3.4.2))(@tiptap/pm@3.4.2)(@tiptap/react@3.4.2(@floating-ui/dom@1.7.4)(@tiptap/core@3.4.2(@tiptap/pm@3.4.2))(@tiptap/pm@3.4.2)(@types/react-dom@19.1.9(@types/react@19.1.12))(@types/react@19.1.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@types/react-dom@19.1.9(@types/react@19.1.12))(@types/react@19.1.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
     transitivePeerDependencies:
       - '@babel/core'
       - '@floating-ui/dom'
@@ -2967,7 +2967,7 @@ snapshots:
 
   zenn-content-css@0.2.3: {}
 
-  zenn-wysiwyg-editor@0.0.4(@tiptap/core@3.4.2(@tiptap/pm@3.4.2))(@tiptap/pm@3.4.2)(@tiptap/react@3.4.2(@floating-ui/dom@1.7.4)(@tiptap/core@3.4.2(@tiptap/pm@3.4.2))(@tiptap/pm@3.4.2)(@types/react-dom@19.1.9(@types/react@19.1.12))(@types/react@19.1.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@types/react-dom@19.1.9(@types/react@19.1.12))(@types/react@19.1.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+  zenn-wysiwyg-editor@0.0.5(@tiptap/core@3.4.2(@tiptap/pm@3.4.2))(@tiptap/pm@3.4.2)(@tiptap/react@3.4.2(@floating-ui/dom@1.7.4)(@tiptap/core@3.4.2(@tiptap/pm@3.4.2))(@tiptap/pm@3.4.2)(@types/react-dom@19.1.9(@types/react@19.1.12))(@types/react@19.1.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@types/react-dom@19.1.9(@types/react@19.1.12))(@types/react@19.1.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
       '@floating-ui/dom': 1.7.4
       '@radix-ui/react-popover': 1.1.15(@types/react-dom@19.1.9(@types/react@19.1.12))(@types/react@19.1.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
