@@ -6,7 +6,7 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "devDependencies": {
-    "zenn-cli-wysiwyg": "^0.0.8"
+  "dependencies": {
+    "zenn-cli-wysiwyg": "^0.0.11"
   }
 }
