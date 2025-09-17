@@ -1,14 +1,16 @@
 ---
 title: Zenn WYSIWYGエディタの使い方
+type: idea
 published: false
 ---
+
 :::message
 更新情報
 
 - 2025/09/17: zenn-cli に WYSIWYG エディタの機能追加 ( Web 版が非対応に)
 
 - ~~2025/08/31: マークダウンのペースト機能に対応~~
-:::
+  :::
 
 # 開発したサービスの概要
 
@@ -79,12 +81,12 @@ Zenn 記法の細かい仕様は[公式ドキュメント](https://zenn.dev/zenn
 
 キーボードショートカット
 
-| Command | Windows/Linux | macOS | 
-| --- | --- | --- | 
-| h1 | `Control + Alt + 1` | `Cmd + Option + 1` | 
-| h2 | `Control + Alt + 2` | `Cmd + Option + 2` | 
-| h3 | `Control + Alt + 3` | `Cmd + Option + 3` | 
-| h4 | `Control + Alt + 4` | `Cmd + Option + 4` | 
+| Command | Windows/Linux       | macOS              |
+| ------- | ------------------- | ------------------ |
+| h1      | `Control + Alt + 1` | `Cmd + Option + 1` |
+| h2      | `Control + Alt + 2` | `Cmd + Option + 2` |
+| h3      | `Control + Alt + 3` | `Cmd + Option + 3` |
+| h4      | `Control + Alt + 4` | `Cmd + Option + 4` |
 
 ## リスト
 
@@ -107,10 +109,10 @@ Zenn 記法の細かい仕様は[公式ドキュメント](https://zenn.dev/zenn
 
 キーボードショートカット
 
-| Command | Windows/Linux | macOS | 
-| --- | --- | --- | 
-| 箇条書きリスト | `Control + Shift + 8` | `Cmd + Shift + 8` | 
-| 番号付きリスト | `Control + Shift + 7` | `Cmd + Shift + 7` | 
+| Command        | Windows/Linux         | macOS             |
+| -------------- | --------------------- | ----------------- |
+| 箇条書きリスト | `Control + Shift + 8` | `Cmd + Shift + 8` |
+| 番号付きリスト | `Control + Shift + 7` | `Cmd + Shift + 7` |
 
 ## テキストリンク
 
@@ -253,11 +255,11 @@ URL をクリップボードにコピー後、テキストを**範囲選択し�
 
 - リンクカード
 
-- Xのポスト
+- X のポスト
 
-- GitHub（ファイルのURL）
+- GitHub（ファイルの URL）
 
-- Gist（ファイルのURL）
+- Gist（ファイルの URL）
 
 - CodePen
 
@@ -267,11 +269,11 @@ URL をクリップボードにコピー後、テキストを**範囲選択し�
 
 - StackBlitz
 
-- Youtube（動画のURL）
+- Youtube（動画の URL）
 
-- SpeakerDeck（スライドページのURL）
+- SpeakerDeck（スライドページの URL）
 
-- Docswell（スライドページのURL）
+- Docswell（スライドページの URL）
 
 - Figma
 
