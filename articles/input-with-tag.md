@@ -5,6 +5,6 @@ topics: []
 emoji: 🔖
 published: false
 ---
-```js
+```
 console.log("ok");
 ```
