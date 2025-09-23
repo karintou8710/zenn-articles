@@ -19,10 +19,6 @@ Zenn で記事を執筆する際はどのエディタを使っていますか？
 
 - web 版（お試し用）：https://zenn-wysiwyg-editor.karintou.dev/
 
-Zenn CLI と web の 2 つに対応しています。
-
-web はお試しができる程度なので、本格的に使いたい方は Git 管理も可能な Zenn CLI版がおすすめです。
-
 Zenn CLI 版は以下の `zenn-cli-wysiwyg` パッケージをインストールします。
 他は [zenn-cli と同じ方法](https://zenn.dev/zenn/articles/install-zenn-cli)で始められます。
 
@@ -40,6 +36,8 @@ npx zenn
 v20 未満ではエラーになるためご注意ください。
 :::
 
+web はお試しができる程度なので、本格的に使いたい方は Git 管理も可能な Zenn CLI版がおすすめです。
+
 （皆さんのスターがモチベーションになるのでぜひ！！）
 
 https://github.com/karintou8710/zenn-editor-wysiwyg
@@ -49,10 +47,6 @@ https://github.com/karintou8710/zenn-editor-wysiwyg
 Zenn CLI 版は編集モードが追加されており、記事画面のスイッチで切り替えができます。
 
 ここを ON にしない限り、通常の Zenn CLI と同じように使えます。
-
-詳細の機能は以下をご確認ください！本記事ではいくつかピックアップして紹介します。
-
-https://zenn.dev/karintou/articles/eabe0354fcc947
 
 ### リアルタイムでマークダウンファイルと同期
 
@@ -86,6 +80,12 @@ Notion のようにスラッシュコマンドにも対応しています。
 
 マークダウン記法を知らなくても、各種ノードを作成することが可能です。
 
+---
+
+詳細の機能は以下をご確認ください！本記事ではいくつかピックアップして紹介します。
+
+https://zenn.dev/karintou/articles/eabe0354fcc947
+
 ## 技術
 
 [zenn-editor ](https://github.com/zenn-dev/zenn-editor)をフォークして開発をしています。主な変更内容は以下です。
@@ -97,6 +97,16 @@ Notion のようにスラッシュコマンドにも対応しています。
 - zenn-markdown-html をブラウザで実行可能に
 
 本記事では WYSIWYG エディタについて解説します。
+
+### zenn-cli に Web 編集モードを追加
+
+zenn-cli は、フロントエンドとバックエンドの構成になっています。
+マークダウンファイルを更新すると、リアルタイムでフロントエンドにも反映されてプレビューがやりやすくなっていました。
+
+今回はWYSIWYG エディタと連携するにあたって、逆方向の通信を追加しています。
+具体的には、WYSIWYG エディタで編集をすると、マークダウンに変換されてファイルに保存されるようにしました。
+
+この方法では、マークダウン → プレビュー で活用されていた **WebSocket** を採用しています。
 
 ### WYISWYG エディタ
 
@@ -131,10 +141,13 @@ zenn-markdown-html が出力する HTML を参考に、コンテンツの種類�
 </aside>
 ```
 
-外側の aside が wrapper になっており、msg-symbol は装飾、msg-content は複数のブロック要素を含みます。
+外側の aside が ラッパー になっており、msg-symbol は装飾、msg-content は複数のブロック要素を含みます。基本的に、タグとノードは１：１になります。
 
-これをモデル定義に反映すると、以下のようになります。
-基本的に、タグとノードは１：１になります。
+msg-symbol は装飾向けのノードのため、別途プラグインで**デコレーション**として追加します。
+
+addNodeView や 通常のノードにすると、キャレットの移動が出来なくなったり、削除可能になったりと色々バグが起きるため、編集可能文書内の装飾は デコレーションにする必要があります。
+
+この、ラッパー・装飾・コンテンツをモデル定義に反映すると、以下のようになります。
 
 ```ts:message.ts
 export const Message = Node.create({
@@ -200,11 +213,57 @@ export const MessageContent = Node.create({
 
 ```
 
-parseHTML では、タグとクラス名をもとにノードの決定をしています。
+```ts:decoration.ts
+import type { Node } from '@tiptap/pm/model';
+import { Plugin, PluginKey } from '@tiptap/pm/state';
+import { Decoration, DecorationSet } from '@tiptap/pm/view';
 
-msg-symbol は装飾向けのノードのため、別途プラグインで**デコレーション**として追加します。
+export function createMessageSymbolDecorationPlugin(nodeName: string) {
+  function getDecorations(doc: Node): DecorationSet {
+    const decorations: Decoration[] = [];
 
-addNodeView や 通常のノードにすると、キャレットの移動が出来なくなったり、削除可能になったりと色々バグが起きるため、編集可能文書内の装飾は デコレーションにする必要があります。
+    doc.descendants((node: Node, pos: number) => {
+      if (node.type.name === nodeName) {
+        decorations.push(
+          Decoration.widget(pos + 1, () => {
+            const element = document.createElement('span');
+            element.className = 'msg-symbol';
+            element.textContent = '!';
+            return element;
+          })
+        );
+      }
+    });
+
+    return DecorationSet.create(doc, decorations);
+  }
+
+  return new Plugin({
+    key: new PluginKey('messageSymbolDecoration'),
+    state: {
+      init(_, { doc }) {
+        return getDecorations(doc);
+      },
+      apply(tr, oldDecorations) {
+        if (!tr.docChanged) {
+          return oldDecorations.map(tr.mapping, tr.doc);
+        }
+
+        return getDecorations(tr.doc);
+      },
+    },
+    props: {
+      decorations(state) {
+        return this.getState(state);
+      },
+    },
+  });
+}
+```
+
+これがノードの基礎部分になります。
+
+ここに Backspace などの特殊キーを入力した時の挙動や、マークダウン記法などを機能拡張していくことでノードを構築します。
 
 #### マークダウンとの相互変換
 
