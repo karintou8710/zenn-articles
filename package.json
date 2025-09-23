@@ -7,6 +7,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "zenn-cli-wysiwyg": "^0.0.14"
+    "zenn-cli-wysiwyg": "^0.0.15"
   }
 }

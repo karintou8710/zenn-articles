@@ -15,18 +15,19 @@ Zenn で記事を執筆する際はどのエディタを使っていますか？
 
 ![WYSIWYGエディタの動作](/images/zenn-cli-wysiwyg/e75dec27-ba7b-48d0-9d66-3d74a9c11d57.gif)
 
-- Zenn CLI 対応：https://www.npmjs.com/package/zenn-cli-wysiwyg
+- Zenn CLI 対応：https://github.com/karintou8710/zenn-editor-wysiwyg
 
 - web 版（お試し用）：https://zenn-wysiwyg-editor.karintou.dev/
 
 Zenn CLI と web の 2 つに対応しています。
 
-web はエディタのお試しができる程度なので、本格的に使いたい方は Git 管理も可能な Zenn CLI版がおすすめです。
+web はお試しができる程度なので、本格的に使いたい方は Git 管理も可能な Zenn CLI版がおすすめです。
 
 Zenn CLI 版は以下の `zenn-cli-wysiwyg` パッケージをインストールします。
 他は [zenn-cli と同じ方法](https://zenn.dev/zenn/articles/install-zenn-cli)で始められます。
 
-```bash:zenn-cli-wysiwyg の始め方
+```bash:zenn-cli-wysiwygの始め方
+# 適当な空ディレクトリに移動する
 npm init -y
 npm install zenn-cli-wysiwyg
 npx zenn init
@@ -77,7 +78,13 @@ https://zenn.dev/karintou/articles/eabe0354fcc947
 
 画像ファイルは `images/<slug>/<uuid>.<ext>` に保存されます。
 
-### コードブロック
+### スラッシュコマンド
+
+![ezgif-4a69068f0e71d0](/images/zenn-cli-wysiwyg/ffe2f3a2-2c48-4791-a13a-8edf874061df.gif)
+
+Notion のようにスラッシュコマンドにも対応しています。
+
+マークダウン記法を知らなくても、各種ノードを作成することが可能です。
 
 ## 技術
 
@@ -88,6 +95,8 @@ https://zenn.dev/karintou/articles/eabe0354fcc947
 - zenn-cli に Web 編集モードを追加
 
 - zenn-markdown-html をブラウザで実行可能に
+
+本記事では WYSIWYG エディタについて解説します。
 
 ### WYISWYG エディタ
 
@@ -102,11 +111,11 @@ Tiptap は流行りのヘッドレスなため、UI のカスタマイズ性が�
 また Tiptap はドキュメントが豊富でコードも読みやすいため、RTE の中では参考にできるものが多いと思いました。最悪、ラップ元の ProseMirror の関連コードを読んで解決できるという安心感があります。
 ProseMirrorの方で [Discussion](https://discuss.prosemirror.net/) が活発に動いているため、こちらを参考にすることも多かったです。
 
-:::message
-本節のここから先は、ProseMirror と Tiptap がわかる方向けの解説です。
-:::
-
 #### 独自ノードの作り方
+
+:::message
+Tiptap を触ったことがある方向けの解説です
+:::
 
 zenn-markdown-html が出力する HTML を参考に、コンテンツの種類・parseHTML・renderHTML を指定します。
 
@@ -127,7 +136,7 @@ zenn-markdown-html が出力する HTML を参考に、コンテンツの種類�
 これをモデル定義に反映すると、以下のようになります。
 基本的に、タグとノードは１：１になります。
 
-```ts
+```ts:message.ts
 export const Message = Node.create({
   name: 'message',
   group: 'block',
@@ -162,7 +171,7 @@ export const Message = Node.create({
 
 ```
 
-```ts
+```ts:message-content.ts
 import { mergeAttributes, Node } from '@tiptap/react';
 
 export const MessageContent = Node.create({
@@ -191,13 +200,15 @@ export const MessageContent = Node.create({
 
 ```
 
-msg-symbol は装飾向けのノードのため、別途プラグインでデコレーションとして追加します。
+parseHTML では、タグとクラス名をもとにノードの決定をしています。
+
+msg-symbol は装飾向けのノードのため、別途プラグインで**デコレーション**として追加します。
 
 addNodeView や 通常のノードにすると、キャレットの移動が出来なくなったり、削除可能になったりと色々バグが起きるため、編集可能文書内の装飾は デコレーションにする必要があります。
 
 #### マークダウンとの相互変換
 
-文書には３種類のデータ形式があります。
+本サービスの文書には３種類のデータ形式があります。
 
 - マークダウン
 
@@ -207,19 +218,41 @@ addNodeView や 通常のノードにすると、キャレットの移動が出�
 
   - parseHTML と renderHTML は編集用 HTML を扱う
 
-マークダウン → 編集用 HTML は、一度 zenn-markdown-html で表示用 HTML にしてから、装飾をDOM操作で削除して、編集用 HTML に変換しています。
+`マークダウン → 編集用 HTML` は、一度 zenn-markdown-html で表示用 HTML にしてから、装飾をDOM操作で削除して、編集用 HTML に変換しています。
+ここで装飾を消さないと、装飾部分がテキストとして認識されて読み込みがバグります。
 
-編集用 HTML → マークダウンは、[prosemirror-markdown](https://github.com/ProseMirror/prosemirror-markdown) で変換しています。内部的には、ノードツリーを再起的に辿って、マークダウンを出力しています。
+`編集用 HTML → マークダウン`は、[prosemirror-markdown](https://github.com/ProseMirror/prosemirror-markdown) で変換しています。内部的には、ノードツリーを再起的に辿って、マークダウンを出力しています。
 
 #### 自動テスト
 
-### zenn-cli に Web 編集モードを追加
+PR Times さんのテスト戦略を参考に、Vitest + Vitest Browser Mode で自動テストを書いています。
 
-編集モードが ON の時は、 更新時に WebSocket で変更通知を送り、都度ファイルを更新するようにしています。
+https://developers.prtimes.jp/2025/02/20/press-release-editor-frontend-testing-tips/
+
+本プロジェクトでは、キー入力やペーストなどのユーザー操作が伴うものは Vitest Browser Mode、それ以外は Vitest です。
+
+特徴的なこととして、キー入力のテストでは選択の初期位置を `setTextSelection()` などで決めたいことがあります。
+しかし、これは内部的に非同期なため以下のコードは失敗します。
+
+```ts
+editor.chain().setTextSelection(2).run();
+await userEvent.keyboard('a'); // setTextSelection が反映されていない
+```
+
+そこで、選択範囲が現在の位置から変わるまでポーリングする `waitSelectionChange` という関数を自作し、以下のようにして解決しています。
+
+```ts
+// 現在の選択位置から変化するまで待機する
+await waitSelectionChange(() => {
+  editor.chain().setTextSelection(2).run();
+});
+
+await userEvent.keyboard('a');
+```
 
 ## まとめ
 
-自分で言うのもアレですが、めっちゃ使いやすいのでおすすめです！
+誇張抜きでめっちゃ使いやすいので、おすすめです！
 
 Notion with マークダウン記法で普段書いている人との相性は抜群だと思います。
 
