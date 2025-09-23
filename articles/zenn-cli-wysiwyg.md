@@ -1,15 +1,29 @@
 ---
-title: Zenn の記事をWYSIWYGで！(Zenn CLI 対応)
+title: Zennの記事をリッチエディタで！(Zenn CLI 対応)
 type: tech
-topics: []
+topics:
+  - zenn
+  - zennfes2025free
+  - Tiptap
 emoji: 🔖
 published: false
 ---
-Zenn で記事を執筆する際はどのエディタを使っていますか？恐らく、Web エディターか Zenn CLI が多いと思います。
+Zenn で記事を執筆する際はどのエディタを使っていますか？
+Web エディターか Zenn CLI が多いと思います。
 
-これらの方法はマークダウンを編集してプレビューで確認するものですが、私は Notion のような WYSIWYG エディタで編集したい気持ちがありました。
+僕は今まで Web エディタが好きで利用していたのですが、以下の観点が気になり始めました。
 
-そこで Zenn CLI に機能拡張という形で開発したので、機能と関連技術について解説します！
+- マークダウンと表示の切り替えにタイムラグがあり、スクロール位置も合わない
+
+- 編集時に特定ブロックのハイライトがされず、文章が長くなると見辛い
+
+- マークダウンと表示の対応関係がわかりずらい
+
+Zenn CLI だとある程度改善されますが、視線の移動や対応関係は依然として解決していません。
+
+そこで Notion ライクに執筆したいこともあり、 Zenn CLI に機能拡張という形で WYSIWYG エディタを開発しました。
+
+本記事ではその機能と関連技術について解説します！
 
 ## 開発したもの
 
@@ -17,10 +31,21 @@ Zenn で記事を執筆する際はどのエディタを使っていますか？
 
 - Zenn CLI 対応：https://github.com/karintou8710/zenn-editor-wysiwyg
 
-- web 版（お試し用）：https://zenn-wysiwyg-editor.karintou.dev/
+- web 版（エディタのお試し用）：https://zenn-wysiwyg-editor.karintou.dev/
 
-Zenn CLI 版は以下の `zenn-cli-wysiwyg` パッケージをインストールします。
-他は [zenn-cli と同じ方法](https://zenn.dev/zenn/articles/install-zenn-cli)で始められます。
+成果物のまま編集可能なWYSWIYG エディタで、Zenn の記事を執筆できます！
+
+このエディタは、Zenn CLI というローカルでマークダウンファイルの作成やプレビューができるツールの拡張という形で開発しています。
+なので、Zenn CLI の利用感を損なわずに WYSIWYG エディタを活用することが可能です。
+
+エディタのお試し用に Web 版もありますが、マークダウン貼り付けやGit管理が出来ないなど、実用面で少し問題があるため Zenn CLI 版をおすすめします。
+
+https://zenn.dev/zenn/articles/zenn-cli-guide
+
+### 始め方
+
+[Zenn CLI と同じ方法](https://zenn.dev/zenn/articles/install-zenn-cli)で始められます。
+異なる点は、`zenn-cli-wysiwyg` パッケージをインストールすることです。
 
 ```bash:zenn-cli-wysiwygの始め方
 # 適当な空ディレクトリに移動する
@@ -36,7 +61,7 @@ npx zenn
 v20 未満ではエラーになるためご注意ください。
 :::
 
-web はお試しができる程度なので、本格的に使いたい方は Git 管理も可能な Zenn CLI版がおすすめです。
+---
 
 （皆さんのスターがモチベーションになるのでぜひ！！）
 
@@ -44,23 +69,26 @@ https://github.com/karintou8710/zenn-editor-wysiwyg
 
 ## 機能紹介
 
-Zenn CLI 版は編集モードが追加されており、記事画面のスイッチで切り替えができます。
+Zenn CLI 版は**編集モード**が追加されており、記事画面の**スイッチで切り替え**ができます。
 
-ここを ON にしない限り、通常の Zenn CLI と同じように使えます。
+ここが OFF だと、通常の Zenn CLI と同じように利用可能です。
+
+以下では、いくつか機能をピックアップして紹介します。
 
 ### リアルタイムでマークダウンファイルと同期
 
 ![ezgif-8af8df4d40f55e](/images/zenn-cli-wysiwyg/81e8f70c-e523-4556-be2c-2fd32dfe4ce2.gif)
 
-編集モードでの更新はリアルタイムでマークダウンに変換され、ファイルと同期されます。
+目玉機能です！
+編集モードでの更新は**リアルタイムでマークダウンに変換**され、ファイルと同期されます。
 
-もちろん、逆のマークダウン → エディタ の方向も対応しています。
+もちろん、逆のマークダウン → エディタ も対応しています。
 
 ### 埋め込み要素の URL 貼り付け
 
 ![ezgif-8e644a887bcb29](/images/zenn-cli-wysiwyg/faebe6eb-141f-4767-821e-04a832026aef.gif)
 
-マークダウンでは `@[...](...)` の記法が必要なものでも、URL の貼り付けだけで追加することが可能です。（マークダウン出力ではきちんと Zenn 記法になっています）
+マークダウンでは `@[...](...)` の記法が必要なものでも、URL 貼り付けだけで追加するできます。（マークダウン出力ではきちんと Zenn 記法になっています）
 
 特に SpeakerDeck は iframe から ID を取り出す作業が手間でしたが、本エディタではスライドの URL を貼り付けるだけで、自動的に ID を抽出してくれます。
 
@@ -68,16 +96,15 @@ Zenn CLI 版は編集モードが追加されており、記事画面のスイ�
 
 ![ezgif-12559de3938c15](/images/zenn-cli-wysiwyg/c52692c2-4908-4870-8461-e0d313634ba5.gif)
 
-画像ファイルのドラッグ&ドロップとペーストに対応しています。
+Zenn CLI では画像のアップロードが面倒なことの1つでしたが、WYSIWYG エディタではそれを解決しています。
 
-画像ファイルは `images/<slug>/<uuid>.<ext>` に保存されます。
+ドロップ・ペーストされた画像ファイルは `images/<slug>/<uuid>.<ext>` に保存されます。
 
 ### スラッシュコマンド
 
 ![ezgif-4a69068f0e71d0](/images/zenn-cli-wysiwyg/ffe2f3a2-2c48-4791-a13a-8edf874061df.gif)
 
 Notion のようにスラッシュコマンドにも対応しています。
-
 マークダウン記法を知らなくても、各種ノードを作成することが可能です。
 
 ---
@@ -103,7 +130,7 @@ https://zenn.dev/karintou/articles/eabe0354fcc947
 zenn-cli は、フロントエンドとバックエンドの構成になっています。
 マークダウンファイルを更新すると、リアルタイムでフロントエンドにも反映されてプレビューがやりやすくなっていました。
 
-今回はWYSIWYG エディタと連携するにあたって、逆方向の通信を追加しています。
+今回は WYSIWYG エディタと連携するにあたって、逆方向の通信を追加しています。
 具体的には WYSIWYG エディタで編集をすると、リアルタイムでマークダウンに変換されてファイルに保存されるようにしました。
 
 この方法では、マークダウン → プレビュー で活用されていた **WebSocket** を採用しています。
@@ -119,17 +146,13 @@ https://github.com/karintou8710/zenn-editor-wysiwyg/tree/main/packages/zenn-wysi
 Tiptap は流行りのヘッドレスなため、UI のカスタマイズ性が非常に高いです。今回のように、Zenn がコンテンツの CSS を提供してくれている場合にはうってつけです。
 
 また Tiptap はドキュメントが豊富でコードも読みやすいため、RTE の中では参考にできるものが多いと思いました。最悪、ラップ元の ProseMirror の関連コードを読んで解決できるという安心感があります。
-ProseMirrorの方で [Discussion](https://discuss.prosemirror.net/) が活発に動いているため、こちらを参考にすることも多かったです。
+ProseMirror の方で [Discussion](https://discuss.prosemirror.net/) が活発に動いているため、こちらを参考にすることも多かったです。
 
 #### 独自ノードの作り方
 
-:::message
-Tiptap を触ったことがある方向けの解説です
-:::
-
 zenn-markdown-html が出力する HTML を参考に、コンテンツの種類・parseHTML・renderHTML を指定します。
 
-例えば、以下はメッセージノードのHTMLです。
+例えば、以下はメッセージノードの HTML です。
 
 ```html
 <aside class="msg message">
@@ -277,7 +300,7 @@ export function createMessageSymbolDecorationPlugin(nodeName: string) {
 
   - parseHTML と renderHTML は編集用 HTML を扱う
 
-`マークダウン → 編集用 HTML` は、一度 zenn-markdown-html で表示用 HTML にしてから、装飾をDOM操作で削除して、編集用 HTML に変換しています。
+`マークダウン → 編集用 HTML` は、一度 zenn-markdown-html で表示用 HTML にしてから、装飾を DOM 操作で削除して、編集用 HTML に変換しています。
 ここで装飾を消さないと、装飾部分がテキストとして認識されて読み込みがバグります。
 
 `編集用 HTML → マークダウン`は、[prosemirror-markdown](https://github.com/ProseMirror/prosemirror-markdown) で変換しています。内部的には、ノードツリーを再起的に辿って、マークダウンを出力しています。
@@ -295,7 +318,7 @@ https://developers.prtimes.jp/2025/02/20/press-release-editor-frontend-testing-t
 
 ```ts
 editor.chain().setTextSelection(2).run();
-await userEvent.keyboard('a'); // setTextSelection が反映されていない
+await userEvent.keyboard("a"); // setTextSelection が反映されていない
 ```
 
 そこで、選択範囲が現在の位置から変わるまでポーリングする `waitSelectionChange` という関数を自作し、以下のようにして解決しています。
@@ -306,7 +329,7 @@ await waitSelectionChange(() => {
   editor.chain().setTextSelection(2).run();
 });
 
-await userEvent.keyboard('a');
+await userEvent.keyboard("a");
 ```
 
 ## まとめ
@@ -315,6 +338,6 @@ await userEvent.keyboard('a');
 個人開発は自分が普段から使うものを作るという信念でしたが、これから Zenn の記事はこの WYSIWYG エディタで書くという気持ちになる品物を作れたと思います。
 Notion with マークダウン記法で普段書いている人との相性は抜群です。
 
-今は zenn-editor をフォークして開発する形を撮っていますが、最終的には本家の zenn-editor にマージをもらえるように、完成度を高めていきます！
+今は zenn-editor をフォークして開発する形ですが、最終的には本家の zenn-editor にマージをもらえるように、完成度を高めていきます！
 
 実際に皆さんに使っていただいて感想をいただけるとモチベーションになるので、ぜひ！
