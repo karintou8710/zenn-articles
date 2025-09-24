@@ -71,30 +71,31 @@ https://github.com/karintou8710/zenn-editor-wysiwyg
 
 Zenn CLI 版は**編集モード**が追加されており、記事画面の**スイッチで切り替え**ができます。
 
-ここが OFF だと、通常の Zenn CLI と同じように利用可能です。
+また、**現在は数式以外の Zenn 記法に対応**しています。
+（表示のみ対応していて、編集はマークダウンからのみ可能な記法もあります）
 
 以下では、いくつか機能をピックアップして紹介します。
 
 ### リアルタイムでマークダウンファイルと同期
 
-![ezgif-8af8df4d40f55e](/images/zenn-cli-wysiwyg/81e8f70c-e523-4556-be2c-2fd32dfe4ce2.gif)
+![リアルタイム編集](/images/zenn-cli-wysiwyg/1f897ce3-9831-4cd2-96aa-6ced4eaaf50f.gif)
 
-目玉機能です！
+**目玉機能です！**
 編集モードでの更新は**リアルタイムでマークダウンに変換**され、ファイルと同期されます。
 
 もちろん、逆のマークダウン → エディタ も対応しています。
 
 ### 埋め込み要素の URL 貼り付け
 
-![ezgif-8e644a887bcb29](/images/zenn-cli-wysiwyg/faebe6eb-141f-4767-821e-04a832026aef.gif)
+![埋め込み貼り付け](/images/zenn-cli-wysiwyg/faebe6eb-141f-4767-821e-04a832026aef.gif)
 
-マークダウンでは `@[...](...)` の記法が必要なものでも、URL 貼り付けだけで追加するできます。（マークダウン出力ではきちんと Zenn 記法になっています）
+マークダウンでは `@[...](...)` の記法が必要なものでも、URL 貼り付けだけで追加するできます。（マークダウン出力では Zenn 記法に変換されます）
 
 特に SpeakerDeck は iframe から ID を取り出す作業が手間でしたが、本エディタではスライドの URL を貼り付けるだけで、自動的に ID を抽出してくれます。
 
 ### 画像ファイルのドロップ・ペースト
 
-![ezgif-12559de3938c15](/images/zenn-cli-wysiwyg/c52692c2-4908-4870-8461-e0d313634ba5.gif)
+![画像ファイルドロップ](/images/zenn-cli-wysiwyg/c52692c2-4908-4870-8461-e0d313634ba5.gif)
 
 Zenn CLI では画像のアップロードが面倒なことの 1 つでしたが、WYSIWYG エディタではそれを解決しています。
 
@@ -102,7 +103,7 @@ Zenn CLI では画像のアップロードが面倒なことの 1 つでした�
 
 ### スラッシュコマンド
 
-![ezgif-4a69068f0e71d0](/images/zenn-cli-wysiwyg/ffe2f3a2-2c48-4791-a13a-8edf874061df.gif)
+![スラッシュコマンド](/images/zenn-cli-wysiwyg/ffe2f3a2-2c48-4791-a13a-8edf874061df.gif)
 
 Notion のようにスラッシュコマンドにも対応しています。
 マークダウン記法を知らなくても、各種ノードを作成することが可能です。
@@ -117,13 +118,11 @@ https://zenn.dev/karintou/articles/eabe0354fcc947
 
 [zenn-editor ](https://github.com/zenn-dev/zenn-editor)をフォークして開発をしています。主な変更内容は以下です。
 
-- WYISWYG エディタ本体の開発
-
 - zenn-cli に Web 編集モードを追加
 
-- zenn-markdown-html をブラウザで実行可能に
+- WYISWYG エディタ本体の開発
 
-本記事では WYSIWYG エディタについて解説します。
+- zenn-markdown-html をブラウザで実行可能に
 
 ### zenn-cli に Web 編集モードを追加
 
