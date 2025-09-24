@@ -1,13 +1,14 @@
 ---
-title: Zennの記事をリッチエディタで！(Zenn CLI 対応)
+title: Zenn CLI でリッチエディタを使いたい！
 type: tech
 topics:
   - zenn
   - zennfes2025free
   - Tiptap
 emoji: 🖊️
-published: false
+published: true
 ---
+
 Zenn で記事を執筆する際はどのエディタを使っていますか？
 Web エディタか Zenn CLI が多いと思います。
 
@@ -19,7 +20,7 @@ Web エディタか Zenn CLI が多いと思います。
 
 - マークダウンと表示の対応関係がわかりずらい
 
-Zenn CLI だとある程度改善されますが、根本的には解決箇所もあります。
+Zenn CLI だとある程度改善されますが、根本的に解決できない箇所もあります。
 
 そこで Notion ライクに執筆したいこともあり、 Zenn CLI に機能拡張という形で WYSIWYG エディタを開発しました。
 
@@ -127,13 +128,13 @@ https://zenn.dev/karintou/articles/eabe0354fcc947
 
 zenn-editor はモノレポで、以下のパッケージで構成されています。
 
-| **パッケージ名** | **説明** | 
-| --- | --- | 
-| zenn-cli | ローカルの記事・本を表示するための CLI | 
-| zenn-content-css | Markdown のプレビュー時のスタイル | 
-| zenn-embed-elements | ブラウザ上で動作してほしい埋め込み要素( Web Components で実装) | 
-| zenn-markdown-html | Markdown を HTML に変換する | 
-| zenn-model | 記事や本のデータを扱う | 
+| **パッケージ名**    | **説明**                                                       |
+| ------------------- | -------------------------------------------------------------- |
+| zenn-cli            | ローカルの記事・本を表示するための CLI                         |
+| zenn-content-css    | Markdown のプレビュー時のスタイル                              |
+| zenn-embed-elements | ブラウザ上で動作してほしい埋め込み要素( Web Components で実装) |
+| zenn-markdown-html  | Markdown を HTML に変換する                                    |
+| zenn-model          | 記事や本のデータを扱う                                         |
 
 嬉しいことに、Zenn のコンテンツのスタイルを決定する zenn-content-css が提供されているため、エディタの開発を進めやすかったです。
 
@@ -308,6 +309,7 @@ export const MessageContent = Node.create({
 ```
 
 :::details デコレーションのコード (ProseMirror Plugin として実装)
+
 ```ts:decoration.ts
 import type { Node } from '@tiptap/pm/model';
 import { Plugin, PluginKey } from '@tiptap/pm/state';
@@ -355,6 +357,7 @@ export function createMessageSymbolDecorationPlugin(nodeName: string) {
   });
 }
 ```
+
 :::
 
 ノードは **タグ + クラス名**で判定しています。レンダリングしたものが、再度 parseHTML できるように 同じように renderHTML も定義しています。
