@@ -8,7 +8,6 @@ topics:
 emoji: 🖊️
 published: false
 ---
-
 Zenn で記事を執筆する際はどのエディタを使っていますか？
 Web エディタか Zenn CLI が多いと思います。
 
@@ -128,13 +127,13 @@ https://zenn.dev/karintou/articles/eabe0354fcc947
 
 zenn-editor はモノレポで、以下のパッケージで構成されています。
 
-| **パッケージ名**    | **説明**                                                       |
-| ------------------- | -------------------------------------------------------------- |
-| zenn-cli            | ローカルの記事・本を表示するための CLI                         |
-| zenn-content-css    | Markdown のプレビュー時のスタイル                              |
-| zenn-embed-elements | ブラウザ上で動作してほしい埋め込み要素( Web Components で実装) |
-| zenn-markdown-html  | Markdown を HTML に変換する                                    |
-| zenn-model          | 記事や本のデータを扱う                                         |
+| **パッケージ名** | **説明** | 
+| --- | --- | 
+| zenn-cli | ローカルの記事・本を表示するための CLI | 
+| zenn-content-css | Markdown のプレビュー時のスタイル | 
+| zenn-embed-elements | ブラウザ上で動作してほしい埋め込み要素( Web Components で実装) | 
+| zenn-markdown-html | Markdown を HTML に変換する | 
+| zenn-model | 記事や本のデータを扱う | 
 
 嬉しいことに、Zenn のコンテンツのスタイルを決定する zenn-content-css が提供されているため、エディタの開発を進めやすかったです。
 
@@ -171,7 +170,7 @@ Tiptap は流行りのヘッドレスなため、UI のカスタマイズ性が�
 また Tiptap はドキュメントが豊富でコードも読みやすいため、RTE の中では参考にできるものが多いと思いました。ラップ元の ProseMirror の関連コードを読んで解決できるという安心感があります。
 ProseMirror の方で [Discussion](https://discuss.prosemirror.net/) が活発に動いているため、こちらを参考にすることも多かったです。
 
-### Tiptap の基本
+#### Tiptap の基本
 
 Tiptap は定義されたコンテンツしか認識しません。
 
@@ -309,7 +308,6 @@ export const MessageContent = Node.create({
 ```
 
 :::details デコレーションのコード (ProseMirror Plugin として実装)
-
 ```ts:decoration.ts
 import type { Node } from '@tiptap/pm/model';
 import { Plugin, PluginKey } from '@tiptap/pm/state';
@@ -357,7 +355,6 @@ export function createMessageSymbolDecorationPlugin(nodeName: string) {
   });
 }
 ```
-
 :::
 
 ノードは **タグ + クラス名**で判定しています。レンダリングしたものが、再度 parseHTML できるように 同じように renderHTML も定義しています。
@@ -414,7 +411,7 @@ await userEvent.keyboard("a");
 
 誇張抜きでめっちゃ使いやすいので、おすすめです！
 個人開発は**自身が使うものを作るという信念**でしたが、これから Zenn の記事はこの WYSIWYG エディタで書く気持ちになる品物を作れたと思います。
-Notion with マークダウン記法で普段書いている人との相性は抜群です。
+（もちろん、この記事は zenn-cli-wysiwyg で書いてます）
 
 今は zenn-editor をフォークして開発する形ですが、最終的には本家の zenn-editor にマージをもらえるように、完成度を高めていきます！
 
