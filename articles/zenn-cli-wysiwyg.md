@@ -5,6 +5,7 @@ topics:
   - zenn
   - zennfes2025free
   - Tiptap
+  - frontend
 emoji: 🖊️
 published: true
 ---
