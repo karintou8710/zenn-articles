@@ -5,9 +5,10 @@ topics:
   - zenn
   - zennfes2025free
   - Tiptap
-emoji: 🔖
+emoji: 🖊️
 published: false
 ---
+
 Zenn で記事を執筆する際はどのエディタを使っていますか？
 Web エディタか Zenn CLI が多いと思います。
 
@@ -19,7 +20,7 @@ Web エディタか Zenn CLI が多いと思います。
 
 - マークダウンと表示の対応関係がわかりずらい
 
-Zenn CLI だとある程度改善されますが、根本的には解決されません。
+Zenn CLI だとある程度改善されますが、根本的には解決箇所もあります。
 
 そこで Notion ライクに執筆したいこともあり、 Zenn CLI に機能拡張という形で WYSIWYG エディタを開発しました。
 
@@ -33,7 +34,7 @@ Zenn CLI だとある程度改善されますが、根本的には解決され�
 
 - web 版（エディタのお試し用）：https://zenn-wysiwyg-editor.karintou.dev/
 
-成果物のまま編集可能な WYSWIYG エディタで、Zenn の記事を執筆できます！
+**成果物のまま編集可能**な WYSWIYG エディタで、Zenn の記事を執筆できます！
 
 このエディタは、Zenn CLI というローカルでマークダウンファイルの作成やプレビューができるツールの拡張という形で開発しています。
 なので、Zenn CLI の利用感を損なわずに WYSIWYG エディタを活用することが可能です。
@@ -71,8 +72,7 @@ https://github.com/karintou8710/zenn-editor-wysiwyg
 
 Zenn CLI 版は**編集モード**が追加されており、記事画面の**スイッチで切り替え**ができます。
 
-また、**現在は数式以外の Zenn 記法に対応**しています。
-（表示のみ対応していて、編集はマークダウンからのみ可能な記法もあります）
+エディタでは、**数式以外の Zenn 記法に対応**しています。
 
 以下では、いくつか機能をピックアップして紹介します。
 
@@ -128,22 +128,22 @@ https://zenn.dev/karintou/articles/eabe0354fcc947
 
 zenn-editor はモノレポで、以下のパッケージで構成されています。
 
-| **パッケージ名** | **説明** | 
-| --- | --- | 
-| zenn-cli | ローカルの記事・本を表示するための CLI | 
-| zenn-content-css | Markdown のプレビュー時のスタイル | 
-| zenn-embed-elements | ブラウザ上で動作してほしい埋め込み要素( Web Components で実装) | 
-| zenn-markdown-html | Markdown を HTML に変換する | 
-| zenn-model | 記事や本のデータを扱う | 
+| **パッケージ名**    | **説明**                                                       |
+| ------------------- | -------------------------------------------------------------- |
+| zenn-cli            | ローカルの記事・本を表示するための CLI                         |
+| zenn-content-css    | Markdown のプレビュー時のスタイル                              |
+| zenn-embed-elements | ブラウザ上で動作してほしい埋め込み要素( Web Components で実装) |
+| zenn-markdown-html  | Markdown を HTML に変換する                                    |
+| zenn-model          | 記事や本のデータを扱う                                         |
 
 嬉しいことに、Zenn のコンテンツのスタイルを決定する zenn-content-css が提供されているため、エディタの開発を進めやすかったです。
 
 更に、サーバーのレンダリングが必要な複雑な埋め込み要素は、なんと Zenn が無料でサーバーを用意してくれています。（商用利用は不可）
 
 ```ts
-import markdownToHtml from 'zenn-markdown-html';
+import markdownToHtml from "zenn-markdown-html";
 const html = markdownToHtml(markdown, {
-  embedOrigin: 'https://embed.zenn.studio',
+  embedOrigin: "https://embed.zenn.studio",
 });
 ```
 
@@ -154,17 +154,16 @@ const html = markdownToHtml(markdown, {
 zenn-cli は、フロントエンドとバックエンドの構成になっています。
 元々はマークダウンを更新すると、リアルタイムでフロントエンドにも反映されてプレビューが簡単になる嬉しさがありました。
 
-今回は WYSIWYG エディタと連携するにあたって、逆方向の通信を追加しています。
+今回は WYSIWYG エディタと連携するにあたって、**逆方向の通信**を追加しています。
 具体的には WYSIWYG エディタで編集をすると、リアルタイムでマークダウンに変換されてファイルに保存されるようにしました。
 
 この方法では、マークダウン → プレビュー で活用されていた **WebSocket** を採用しています。
 
 ### WYISWYG エディタ
 
-開発の主役です。
-
 https://github.com/karintou8710/zenn-editor-wysiwyg/tree/main/packages/zenn-wysiwyg-editor
 
+責務を分割するため、１つのパッケージとして開発しました。
 リッチテキストエディター（RTE）を柔軟に構築できる [TIptap](https://tiptap.dev/) を採用しています。
 
 Tiptap は流行りのヘッドレスなため、UI のカスタマイズ性が非常に高いです。今回のように、Zenn がコンテンツの CSS を提供してくれている場合にはうってつけです。
@@ -172,9 +171,44 @@ Tiptap は流行りのヘッドレスなため、UI のカスタマイズ性が�
 また Tiptap はドキュメントが豊富でコードも読みやすいため、RTE の中では参考にできるものが多いと思いました。ラップ元の ProseMirror の関連コードを読んで解決できるという安心感があります。
 ProseMirror の方で [Discussion](https://discuss.prosemirror.net/) が活発に動いているため、こちらを参考にすることも多かったです。
 
+### Tiptap の基本
+
+Tiptap は定義されたコンテンツしか認識しません。
+
+内部表現であるノードを定義して、HTML → ノード を `parseHTML`, ノード → HTML を `renderHTML` で相互に変換しています。
+
+例えば、最も基本的な段落は以下のように定義可能です。
+
+```ts
+import { mergeAttributes, Node } from "@tiptap/core";
+
+export const Paragraph = Node.create({
+  name: "paragraph",
+  group: "block",
+  content: "inline*",
+
+  parseHTML() {
+    return [{ tag: "p" }];
+  },
+
+  renderHTML() {
+    return ["p", 0];
+  },
+});
+```
+
+段落はブロック要素であり、テキストなどのインラインノードを複数持ちます。
+
+parseHTML では p タグを段落ノードに変換することを指示しており、renderHTML は段落ノードを p タグ + 中身のコンテンツをレンダリングしています。
+（0 はノードの子要素の renderHTML を呼ぶ）
+
+ここに、必要に応じてキーボードショートカットや入力ルールなどを追加していきます。
+
 #### 独自ノードの作り方
 
-zenn-markdown-html が出力する HTML を参考に、コンテンツの種類・parseHTML・renderHTML を指定します。
+基本を確認したところで、Zenn の様々なノードをどのように定義するか見てみましょう。
+
+方針としては、zenn-markdown-html が出力する HTML を参考に、コンテンツの種類・parseHTML・renderHTML を指定します。
 
 例えば、以下はメッセージノードの HTML です。
 
@@ -188,11 +222,16 @@ zenn-markdown-html が出力する HTML を参考に、コンテンツの種類�
 </aside>
 ```
 
-外側の aside が ラッパー になっており、msg-symbol は装飾、msg-content は複数のブロック要素を含みます。基本的に、タグとノードは１：１になります。
+外側の `aside` タグが ラッパー になっており、`msg-symbol` は装飾、`msg-content` は複数のブロック要素を含みます。基本的に、タグとノードは１：１になります。
 
-msg-symbol は装飾向けのノードのため、別途プラグインで**デコレーション**として追加します。
+`msg-symbol` は装飾向けのノードのため、別途プラグインで**デコレーション**として追加します。
+デコレーションとは、ProseMirorr の概念で文書内に編集不可な装飾要素を加えるために使われます。
 
-addNodeView や 通常のノードにすると、キャレットの移動が出来なくなったり、削除可能になったりと色々バグが起きるため、編集可能文書内の装飾は デコレーションにする必要があります。
+:::details なぜデコレーションにするのか？
+通常のノードやノードビューにすると、キャレットの移動が出来なくなったり、削除可能になったりと色々バグが起きるため、編集可能文書内の装飾は デコレーションにする必要があります。
+
+~~エラーが表示されるわけではないので、開発中は気づくまで辛い気持ちに。。。~~
+:::
 
 この、ラッパー・装飾・コンテンツをモデル定義に反映すると、以下のようになります。
 
@@ -201,6 +240,15 @@ export const Message = Node.create({
   name: 'message',
   group: 'block',
   content: 'messageContent',
+
+  addAttributes() {
+    return {
+      type: {
+        default: 'message',
+        rendered: false,
+      },
+    };
+  },
 
   parseHTML() {
     return [
@@ -260,6 +308,8 @@ export const MessageContent = Node.create({
 
 ```
 
+:::details デコレーションのコード (ProseMirror Plugin として実装)
+
 ```ts:decoration.ts
 import type { Node } from '@tiptap/pm/model';
 import { Plugin, PluginKey } from '@tiptap/pm/state';
@@ -308,7 +358,11 @@ export function createMessageSymbolDecorationPlugin(nodeName: string) {
 }
 ```
 
-これがノードの基礎部分になります。
+:::
+
+ノードは **タグ + クラス名**で判定しています。レンダリングしたものが、再度 parseHTML できるように 同じように renderHTML も定義しています。
+
+またメッセージには info と alert の２種類用意されているため、クラス名によってノード内の状態を切り返しています。
 
 ここに Backspace などの特殊キーを入力した時の挙動や、マークダウン記法などを機能拡張していくことでノードを構築します。
 
@@ -359,7 +413,7 @@ await userEvent.keyboard("a");
 ## まとめ
 
 誇張抜きでめっちゃ使いやすいので、おすすめです！
-個人開発は自分が普段から使うものを作るという信念でしたが、これから Zenn の記事はこの WYSIWYG エディタで書くという気持ちになる品物を作れたと思います。
+個人開発は**自身が使うものを作るという信念**でしたが、これから Zenn の記事はこの WYSIWYG エディタで書く気持ちになる品物を作れたと思います。
 Notion with マークダウン記法で普段書いている人との相性は抜群です。
 
 今は zenn-editor をフォークして開発する形ですが、最終的には本家の zenn-editor にマージをもらえるように、完成度を高めていきます！
