@@ -124,10 +124,35 @@ https://zenn.dev/karintou/articles/eabe0354fcc947
 
 - zenn-markdown-html をブラウザで実行可能に
 
+### zenn-editor のプロジェクト構成
+
+zenn-editor はモノレポで、以下のパッケージで構成されています。
+
+| **パッケージ名** | **説明** | 
+| --- | --- | 
+| zenn-cli | ローカルの記事・本を表示するための CLI | 
+| zenn-content-css | Markdown のプレビュー時のスタイル | 
+| zenn-embed-elements | ブラウザ上で動作してほしい埋め込み要素( Web Components で実装) | 
+| zenn-markdown-html | Markdown を HTML に変換する | 
+| zenn-model | 記事や本のデータを扱う | 
+
+嬉しいことに、Zenn のコンテンツのスタイルを決定する zenn-content-css が提供されているため、エディタの開発を進めやすかったです。
+
+更に、サーバーのレンダリングが必要な複雑な埋め込み要素は、なんと Zenn が無料でサーバーを用意してくれています。（商用利用は不可）
+
+```ts
+import markdownToHtml from 'zenn-markdown-html';
+const html = markdownToHtml(markdown, {
+  embedOrigin: 'https://embed.zenn.studio',
+});
+```
+
+上のような感じで zenn-markdon-html に `embedOrigin` を指定すると、リンクカードや GitHub のコードなど、凝った埋め込み要素を簡単に利用可能です。
+
 ### zenn-cli に Web 編集モードを追加
 
 zenn-cli は、フロントエンドとバックエンドの構成になっています。
-マークダウンファイルを更新すると、リアルタイムでフロントエンドにも反映されてプレビューがやりやすくなっていました。
+元々はマークダウンを更新すると、リアルタイムでフロントエンドにも反映されてプレビューが簡単になる嬉しさがありました。
 
 今回は WYSIWYG エディタと連携するにあたって、逆方向の通信を追加しています。
 具体的には WYSIWYG エディタで編集をすると、リアルタイムでマークダウンに変換されてファイルに保存されるようにしました。
@@ -136,7 +161,7 @@ zenn-cli は、フロントエンドとバックエンドの構成になって�
 
 ### WYISWYG エディタ
 
-zenn-editor はモノレポだったため、エディタで１つのパッケージを作りました。
+開発の主役です。
 
 https://github.com/karintou8710/zenn-editor-wysiwyg/tree/main/packages/zenn-wysiwyg-editor
 
@@ -144,7 +169,7 @@ https://github.com/karintou8710/zenn-editor-wysiwyg/tree/main/packages/zenn-wysi
 
 Tiptap は流行りのヘッドレスなため、UI のカスタマイズ性が非常に高いです。今回のように、Zenn がコンテンツの CSS を提供してくれている場合にはうってつけです。
 
-また Tiptap はドキュメントが豊富でコードも読みやすいため、RTE の中では参考にできるものが多いと思いました。最悪、ラップ元の ProseMirror の関連コードを読んで解決できるという安心感があります。
+また Tiptap はドキュメントが豊富でコードも読みやすいため、RTE の中では参考にできるものが多いと思いました。ラップ元の ProseMirror の関連コードを読んで解決できるという安心感があります。
 ProseMirror の方で [Discussion](https://discuss.prosemirror.net/) が活発に動いているため、こちらを参考にすることも多かったです。
 
 #### 独自ノードの作り方
