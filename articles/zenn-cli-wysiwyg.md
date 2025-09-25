@@ -1,5 +1,5 @@
 ---
-title: Zenn CLI でリッチエディタを使いたい！
+title: Zenn記事をより直感的に書ける！〜 Zenn CLI対応 WYSIWYGエディタのすゝめ 〜
 type: tech
 topics:
   - zenn
