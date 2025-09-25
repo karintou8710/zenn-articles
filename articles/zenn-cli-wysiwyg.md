@@ -1,5 +1,5 @@
 ---
-title: Zenn記事をより直感的に書ける！〜 Zenn CLI対応 WYSIWYGエディタのすゝめ 〜
+title: Zenn記事をより直感的に書ける！〜 Zenn CLI対応WYSIWYGエディタのすゝめ 〜
 type: tech
 topics:
   - zenn
