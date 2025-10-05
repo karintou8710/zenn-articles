@@ -5,11 +5,9 @@ topics: []
 emoji: 🔖
 published: false
 ---
-zenn-cli に wysiwyg エディターを追加しようと作業をしていたのですが、そこで CJS である `zenn-markdown-html` をブラウザでも実行可能にしようと、ESM に書き換えていました。
+とある CJS ライブラリを ESM に書き換える作業をしていました。
 
-しかし、ブラウザで実行すると期待通りだったのですが、サーバー側の CJS で実行すると import の一部がなぜか `{default: fn}` の形式になり、デフォルトエクスポートが出来ておらずエラーになりました。
-
-調べてみると、`zenn-markdown-html` の依存先である CJS の [@steelydylan/markdown-it-imsize](https://www.npmjs.com/package/@steelydylan/markdown-it-imsize) が関連しているっぽいです。
+しかし、ESMで実行すると期待通りだったのですが、サーバー側の CJS で実行すると import の一部がなぜか `{default: fn}` の形式になり、デフォルトエクスポートが出来ておらずエラーになりました。
 
 本記事ではこの現象が起きた理由を、CJS, ESM, TypeScript や esbuild といったトランスパイラの観点から調べます。
 
@@ -222,8 +220,6 @@ cjs への変換 (esModuleInterop)
 - esm: require が最近対応した
 
 - cjs: \__esModule がついていなければ、{default: mod}の形式に変換する
-
-- TS require
 
 ### 参考
 
