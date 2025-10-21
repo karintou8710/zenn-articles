@@ -1,10 +1,11 @@
 ---
-title: 'position: sticky 雰囲気で使ってない？'
+title: "position: sticky 雰囲気で使ってない？"
 type: tech
-topics: []
-emoji: 🔖
-published: false
+topics: ["css", "frontend", "zennfes2025free", "sticky"]
+emoji: 📎
+published: true
 ---
+
 `position: sticky`、なんとなく雰囲気で使ってませんか？自分はその一人でした。
 
 ヘッダーを上に固定するなど単純なケースはコピペで十分だったのですが、ちょっと複雑になると sticky が思ったように効かないケースがあります。
@@ -77,9 +78,9 @@ MDN には細かい仕様が載っていなかったので、[CSS Positioned Lay
 @[codesandbox](https://codesandbox.io/embed/tqpt4s)
 
 ![image](/images/position-sticky-detail/2952878b-be3c-4135-aa4a-a4eb0c0479c6.png)
-*初期表示*
+_初期表示_
 
-左から順に、**viewport(白) ・sticky 表示領域(紫)・sticky 要素の親(黄色)**になります。
+左から順に、**viewport(白) ・sticky 表示領域(紫)・sticky 要素の親(黄色)** になります。
 viewport はディスプレイで表示されてる領域です。
 
 今回は top が指定されているので、以下のイメージで sticky 要素が動きます。
@@ -95,20 +96,20 @@ viewport はディスプレイで表示されてる領域です。
 少し下にスクロールして動かして見ましょう。
 
 ![image](/images/position-sticky-detail/5f2023e6-cc94-47aa-b645-83ac38314a0a.png)
-*下にスクロール*
+_下にスクロール_
 
 下にスクロールすることで、sticky 要素は紫と黄色の重なった部分に収まるように移動します。
 
 この時、画面全体の高さは変わらないことに注意してください。元の位置に同じサイズの空要素を配置して移動しているイメージです。
 
-上の例は top: 0 でしたが、top: 100pxの場合は次のようになります。
+上の例は top: 0 でしたが、top: 100px の場合は次のようになります。
 
 @[codesandbox](https://codesandbox.io/embed/ttqnd9)
 
 ![image](/images/position-sticky-detail/7a65a76b-8cb0-4202-ae6f-b099914ee0f2.png)
-*top: 100px (ヘッダーの高さ)*
+_top: 100px (ヘッダーの高さ)_
 
-top: 100px を指定したことで、sticky 表示領域の上部の100pxが制限されます。
+top: 100px を指定したことで、sticky 表示領域の上部の 100px が制限されます。
 
 よって、viewport の上 100px に空白ができて、その下に sticky 要素が粘着します。
 
